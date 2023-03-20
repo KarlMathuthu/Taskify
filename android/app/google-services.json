@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "548504345051",
+    "project_id": "webtaskify",
+    "storage_bucket": "webtaskify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548504345051:android:577e8f3ba002f6d02feffe",
+        "android_client_info": {
+          "package_name": "com.karlmathuthu.taskify.taskify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548504345051-uoif8adqachvnn2d9ha8n59lq2e6ft0i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_V-3oTNV8jJQsDHydUVZsGu1BDt86ncE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548504345051-uoif8adqachvnn2d9ha8n59lq2e6ft0i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
