@@ -16,11 +16,13 @@ Taskify is an ongoing open source Android and IOS application that is can be use
  - Dark theme.
 
  ## Contributing
-  - Please feal free to contribute on this project.
+  - Please feel free to contribute on this project.
 
 ## Notice
 
  Please note that this project is still maintained.
+
+## Developer
 
 
   Made with ❤ by Karl Mathuthu.
