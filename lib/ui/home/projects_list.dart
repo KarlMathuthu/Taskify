@@ -33,7 +33,7 @@ class _ProjectsListState extends State<ProjectsList> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        toolbarHeight: 20,
+        toolbarHeight: 15,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -91,6 +91,7 @@ class _ProjectsListState extends State<ProjectsList> {
                               description: snapshot.data!.docs[index]
                                   ['description'],
                               title: snapshot.data!.docs[index]['name'],
+                              logourl: snapshot.data!.docs[index]['logoUrl'],
                             ),
                           );
                         }),

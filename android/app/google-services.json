@@ -29,6 +29,13 @@
             {
               "client_id": "548504345051-uoif8adqachvnn2d9ha8n59lq2e6ft0i.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "548504345051-0un8e9bhd5pea26vj2pp1g8moaebbri6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.karlmathuthu.taskify.taskify"
+              }
             }
           ]
         }

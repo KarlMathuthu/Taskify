@@ -1,17 +1,27 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:taskify/theme/theme_colors.dart';
-import 'package:taskify/widgets/text_field.dart';
+import 'package:taskify/widgets/bottom_container_chat.dart';
+import 'package:taskify/widgets/custom_button.dart';
 
 import '../../widgets/message_design.dart';
 
 class ProjectsChatPage extends StatefulWidget {
   final String projectName;
+  final String projectId;
+  final String projectLogo;
+  final String createDate;
   const ProjectsChatPage({
     super.key,
     required this.projectName,
+    required this.projectId,
+    required this.projectLogo,
+    required this.createDate,
   });
 
   @override
@@ -19,21 +29,34 @@ class ProjectsChatPage extends StatefulWidget {
 }
 
 class _ProjectsChatPageState extends State<ProjectsChatPage> {
-  final TextEditingController _controller = TextEditingController();
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ThemeColors().grey,
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        backgroundColor: Colors.grey[200],
-        title: Text(widget.projectName),
+        backgroundColor: Colors.white,
+        title: Row(
+          children: [
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: ThemeColors().blue,
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(widget.projectLogo),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(widget.projectName),
+          ],
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -44,33 +67,95 @@ class _ProjectsChatPageState extends State<ProjectsChatPage> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              reverse: false,
-              itemCount: 50,
+            child: SingleChildScrollView(
+              reverse: true,
               physics: BouncingScrollPhysics(),
-              itemBuilder: ((context, index) {
-                return MessageDesign();
-              }),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 40,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            color: ThemeColors().purpleAccent.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${widget.projectName} was created',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Text(
+                    widget.createDate,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('projects')
+                          .doc(widget.projectId)
+                          .collection('chats')
+                          .orderBy('date', descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            reverse: true,
+                            itemCount: snapshot.data!.docs.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: ((context, index) {
+                              var a = DateTime.parse(snapshot
+                                  .data!.docs[index]['date']
+                                  .toDate()
+                                  .toString());
+                              var time = DateFormat('HH:mm').format(a);
+
+                              bool isMe = snapshot.data!.docs[index]
+                                      ['senderId'] ==
+                                  _auth.currentUser!.uid;
+
+                              return MessageDesign(
+                                isMe: isMe,
+                                message: snapshot.data!.docs[index]['message'],
+                                time: time,
+                                senderId: snapshot.data!.docs[index]
+                                    ['senderId'],
+                                projectId: widget.projectId,
+                                messageIndex: snapshot.data!.docs[index].id,
+                              );
+                            }),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
+                ],
+              ),
             ),
           ),
-          Container(
-            height: 50,
-            width: double.infinity,
-            color: Colors.grey[200],
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFieldWidget(
-                    hintText: 'Write something...',
-                    controller: _controller,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.send),
-                )
-              ],
-            ),
+          //Bottom Container
+          BottomContainerChat(
+            projectId: widget.projectId,
           ),
         ],
       ),

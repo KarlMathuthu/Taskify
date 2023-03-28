@@ -2,12 +2,11 @@
 
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskify/resources/auth_res.dart';
-import 'package:taskify/theme/theme_colors.dart';
-import 'package:taskify/ui/home/main_home.dart';
 import 'package:taskify/widgets/custom_button.dart';
 import 'package:taskify/widgets/custom_loader.dart';
 import 'package:taskify/widgets/text_field.dart';

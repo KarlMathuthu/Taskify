@@ -18,7 +18,7 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        toolbarHeight: 20,
+        toolbarHeight: 15,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),

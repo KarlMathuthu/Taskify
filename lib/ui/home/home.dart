@@ -9,6 +9,7 @@ import 'package:taskify/ui/project_ui/choose_members.dart';
 import 'package:taskify/ui/project_ui/create_project.dart';
 import 'package:taskify/widgets/custom_widget.dart';
 import 'package:taskify/widgets/widget_home.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,14 +22,13 @@ class _HomePageState extends State<HomePage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        toolbarHeight: 20,
+        toolbarHeight: 15,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -213,11 +213,16 @@ class _HomePageState extends State<HomePage> {
                               physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               itemBuilder: ((context, index) {
+                                var a = DateTime.parse(snapshot
+                                    .data!.docs[index]['createDate']
+                                    .toDate()
+                                    .toString());
+                                var time = DateFormat('d MMM y').format(a);
                                 return CustomContainer(
                                   description: snapshot.data!.docs[index]
                                       ['description'],
                                   title: snapshot.data!.docs[index]['name'],
-                                  createDate: '',
+                                  createDate: time,
                                 );
                               }),
                             );
@@ -256,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                                 height: 25,
                                 width: 30,
                                 decoration: BoxDecoration(
-                                  color: ThemeColors().grey,
+                                  color: ThemeColors().grey.withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
@@ -292,11 +297,16 @@ class _HomePageState extends State<HomePage> {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: ((context, index) {
+                              var a = DateTime.parse(snapshot
+                                  .data!.docs[index]['createDate']
+                                  .toDate()
+                                  .toString());
+                              var time = DateFormat('d MMM y').format(a);
                               return WidgetHome(
                                 description: (snapshot.data!.docs[index]
                                     ['description']),
                                 progress_percentage: '100',
-                                createDate: 'output',
+                                createDate: time,
                                 title: (snapshot.data!.docs[index]['name']),
                               );
                             }),
@@ -318,9 +328,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
               builder: ((context) {
-                return ChooseMembers(
-                 
-                );
+                return ChooseMembers();
               }),
             ),
           );

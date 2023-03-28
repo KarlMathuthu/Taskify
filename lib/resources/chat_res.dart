@@ -23,7 +23,7 @@ class ChatRes {
       });
 
       res = 'success';
-    } catch (error) {
+    } catch (error) {   
       res = error.toString();
     }
     return res;

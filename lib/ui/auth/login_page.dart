@@ -42,9 +42,10 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: ((context) => MainHome()),
+          builder: (context) => MainHome(),
         ),
       );
+      Navigator.pop(context);
     } else {
       _loader.hideLoader();
       Fluttertoast.showToast(

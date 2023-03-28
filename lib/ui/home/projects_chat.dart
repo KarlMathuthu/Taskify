@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:taskify/theme/theme_colors.dart';
 import 'package:taskify/ui/project_ui/projects_chat_page.dart';
 import 'package:taskify/widgets/list_tile.dart';
@@ -23,7 +24,7 @@ class _ProjectsChatState extends State<ProjectsChat> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        toolbarHeight: 20,
+        toolbarHeight: 15,
       ),
       body: Container(
         color: Colors.white,
@@ -86,13 +87,20 @@ class _ProjectsChatState extends State<ProjectsChat> {
                             ),
                             child: StreamBuilder(
                               stream: FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(_auth.currentUser!.uid)
                                   .collection('projects')
                                   .snapshots(),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
-                                  return Container();
+                                  return Center(
+                                    child: Text(
+                                      '0',
+                                      style: TextStyle(
+                                        color: ThemeColors().pink,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
                                 } else {
                                   return Center(
                                     child: Text(
@@ -115,8 +123,6 @@ class _ProjectsChatState extends State<ProjectsChat> {
                     //Projects Lists.
                     StreamBuilder(
                       stream: FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(_auth.currentUser!.uid)
                           .collection('projects')
                           .snapshots(),
                       builder: ((context, snapshot) {
@@ -128,6 +134,14 @@ class _ProjectsChatState extends State<ProjectsChat> {
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: ((context, index) {
+                              var description = snapshot
+                                  .data!.docs[index]['description']
+                                  .toString();
+                              var a = DateTime.parse(snapshot
+                                  .data!.docs[index]['createDate']
+                                  .toDate()
+                                  .toString());
+                              var time = DateFormat('d MMM y').format(a);
                               return ListTileWidget(
                                 onTap: () {
                                   Navigator.push(
@@ -136,13 +150,18 @@ class _ProjectsChatState extends State<ProjectsChat> {
                                       builder: (context) => ProjectsChatPage(
                                         projectName: snapshot.data!.docs[index]
                                             ['name'],
+                                        projectId: snapshot.data!.docs[index]
+                                            ['projectId'],
+                                        projectLogo: snapshot.data!.docs[index]
+                                            ['logoUrl'],
+                                        createDate: time,
                                       ),
                                     ),
                                   );
                                 },
                                 appLogoUrl: snapshot.data!.docs[index]
                                     ['logoUrl'],
-                                lastMessage: 'Project was created.',
+                                lastMessage: description,
                                 title: snapshot.data!.docs[index]['name'],
                               );
                             }),

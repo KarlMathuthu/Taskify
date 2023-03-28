@@ -29,18 +29,32 @@ class _ChooseMembersState extends State<ChooseMembers> {
   Map<String, dynamic>? userMap;
 
   onSearch() async {
-    await _firestore
-        .collection('users')
-        .where(
-          'email',
-          isEqualTo: _controller.text.toLowerCase(),
-        )
-        .get()
-        .then((value) {
-      setState(() {
-        userMap = value.docs[0].data();
-      });
-    });
+    if (_controller.text.trim().toLowerCase().isNotEmpty) {
+      try {
+        await _firestore
+            .collection('users')
+            .where(
+              'email',
+              isEqualTo: _controller.text.toLowerCase(),
+            )
+            .get()
+            .then((value) {
+          setState(() {
+            userMap = value.docs[0].data();
+          });
+        });
+      } catch (error) {
+        Fluttertoast.showToast(
+          msg: 'User not found',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } else {}
   }
 
   getCurrentUserDetails() async {
@@ -223,6 +237,7 @@ class _ChooseMembersState extends State<ChooseMembers> {
                     ),
                   ),
                 );
+                //Navigator.pop(context);
               },
               child: Icon(Icons.arrow_forward),
             )

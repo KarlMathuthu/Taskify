@@ -9,11 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:taskify/resources/project_res.dart';
+import 'package:taskify/resources/storage_res.dart';
 import 'package:taskify/theme/theme_colors.dart';
 import 'package:taskify/widgets/custom_button.dart';
 import 'package:taskify/widgets/custom_loader.dart';
 import 'package:taskify/widgets/text_field.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../utils/pick_image.dart';
 
@@ -33,6 +34,7 @@ class _PersonalProjectState extends State<PersonalProject> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _description = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Uint8List? _image;
   final CustomLoader _loader = CustomLoader();
@@ -65,48 +67,80 @@ class _PersonalProjectState extends State<PersonalProject> {
     'https://firebasestorage.googleapis.com/v0/b/webtaskify.appspot.com/o/illustrations%2FScenes09.png?alt=media&token=0cbe7df9-cb76-46ce-a7cd-226d4525c3b5',
   ];
 
-  //Method for creating project
-
-  createPersonalProject() async {
+  //Function for creating project
+  createNewProject() async {
+    String projectId = Uuid().v1();
     String name = _name.text.trim();
     String description = _description.text.trim();
     var illustrationList =
         _illustrations[Random().nextInt(_illustrations.length)];
 
-    for (int i = 0; i < widget.membersList.length; i++) {
-      String uid = widget.membersList[i]['uid'];
-
-      String res = await ProjectRes().createPersonalProject(
-        name,
-        description,
+    try {
+      String logoUrl = await StorageRes().uploadImageToStorage(
         _image!,
-        illustrationList,
-        _auth.currentUser!.uid,
-        uid,
       );
-      if (res == 'success') {
-        _loader.hideLoader();
-        
-
+      //Create project seperate collection
+      _firestore.collection('projects').doc(projectId).set({
+        'projectId': projectId,
+        'members': widget.membersList,
+        'name': name,
+        'description': description,
+        'createDate': DateTime.now(),
+        'finished': false,
+        'logoUrl': logoUrl,
+        'illustration': illustrationList,
+        'admin': _auth.currentUser!.uid,
+      });
+      for (int i = 0; i < widget.membersList.length; i++) {
+        String uid = widget.membersList[i]['uid'];
+        //Add project to all selected users
+        _firestore
+            .collection('users')
+            .doc(uid)
+            .collection('projects')
+            .doc(projectId)
+            .set({
+          'name': name,
+          'description': description,
+          'createDate': DateTime.now(),
+          'finished': false,
+          'logoUrl': logoUrl,
+          'illustration': illustrationList,
+          'admin': _auth.currentUser!.uid,
+          'projectId': projectId,
+        });
+        //Send a welcome message
+        _firestore
+            .collection('projects')
+            .doc(projectId)
+            .collection('chats')
+            .add({
+          'message': 'Project was created',
+          'type': 'welcome',
+        });
         Fluttertoast.showToast(
-            msg: "Project created",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
+          msg: "Project created",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
         _loader.hideLoader();
-        Fluttertoast.showToast(
-            msg: res,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        Navigator.pop(context);
       }
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.pop(context);
     }
   }
 
@@ -117,7 +151,7 @@ class _PersonalProjectState extends State<PersonalProject> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         title: Text(
-          'New Project',
+          'App logo',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -126,16 +160,6 @@ class _PersonalProjectState extends State<PersonalProject> {
       ),
       body: Column(
         children: [
-          Text(
-            'App logo',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -219,7 +243,7 @@ class _PersonalProjectState extends State<PersonalProject> {
                       fontSize: 16.0);
                 } else {
                   _loader.showLoader(context);
-                  createPersonalProject();
+                  createNewProject();
                 }
               }),
         ],

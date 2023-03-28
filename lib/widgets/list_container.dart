@@ -1,18 +1,22 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:taskify/theme/theme_colors.dart';
 
 class ListContainer extends StatelessWidget {
   final Color colorsList;
   final String illustration;
   final String title;
   final String description;
+  final String logourl;
   const ListContainer({
     super.key,
     required this.colorsList,
     required this.illustration,
     required this.title,
     required this.description,
+    required this.logourl,
   });
 
   @override
@@ -64,6 +68,17 @@ class ListContainer extends StatelessWidget {
                       color: Colors.white70,
                       fontSize: 16,
                     ),
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(logourl),
+                        backgroundColor: ThemeColors().blue,
+                      ),
+                    ],
                   ),
                 ),
               ],
