@@ -4,23 +4,21 @@ Taskify is an ongoing open source Android and IOS application that is can be use
 
 ## Screenshots
 
-<img src="screenshots/project_man1.png">
+I will add some screenshots here.
 
 ## Features
 - Create project with Logo and description.
 - Project lists.
+ - Chat/Discuss about your projects with your team mates.
 
 ## Upcoming Features
- - Chat about the project.
  - Discover other teams and projects.
  - Dark theme.
-
- ## Contributing
-  - Please feel free to contribute on this project.
 
 ## Notice
 
  Please note that this project is still maintained.
+ In settings i know i'm not done yet so don't be surprised.
 
 ## Developer
 

@@ -3,7 +3,7 @@
     "short_name": "taskify",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
+    "background_color": "#66A4CE",
     "theme_color": "#0175C2",
     "description": "Taskify",
     "orientation": "portrait-primary",
@@ -15,6 +15,7 @@
             "type": "image/png"
         },
         {
+            
             "src": "icons/Icon-512.png",
             "sizes": "512x512",
             "type": "image/png"
