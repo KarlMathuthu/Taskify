@@ -4,7 +4,7 @@ Taskify is an ongoing open source Android and IOS application that is can be use
 
 ## Screenshots
 
-I will add some screenshots here.
+<img src = "screenshots/taskify_main.jpg"/>
 
 ## Features
 - Create project with Logo and description.
