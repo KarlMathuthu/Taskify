@@ -20,7 +20,7 @@ Taskify is an ongoing open source Android and IOS application that is can be use
  Please note that this project is still maintained.
  In settings i know i'm not done yet so don't be surprised.
 
-## Developer
+## Developers
 
 
   Made with ❤ by Karl Mathuthu.
