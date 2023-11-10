@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:taskify/theme/theme_colors.dart';
+import 'package:badges/badges.dart' badge;
 
 class ListTileWidget extends StatelessWidget {
   final String title;
@@ -36,9 +35,10 @@ class ListTileWidget extends StatelessWidget {
             ),
           ),
         ),
+        
         title: Text(title),
         subtitle: Text(lastMessage),
-        trailing: Badge(
+        trailing: badges.Badge(
           badgeStyle: BadgeStyle(
             badgeColor: ThemeColors().blue,
           ),
