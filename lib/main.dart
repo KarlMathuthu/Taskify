@@ -2,9 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:taskify/check_user_state.dart';
 import 'package:taskify/firebase_options.dart';
-import 'package:taskify/ui/auth/login_page.dart';
-import 'package:taskify/ui/home/home.dart';
-import 'package:taskify/ui/home/main_home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
