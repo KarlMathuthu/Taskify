@@ -21,7 +21,7 @@ dependencies:
   cloud_firestore: ^4.4.4
   intl: ^0.17.0
   flutter_svg: ^1.1.6
-  badges: ^3.0.2
+  badges: ^3.1.2
   flutter_slidable: ^2.0.0
   image_picker: ^0.8.6+4
   uuid: ^3.0.7
