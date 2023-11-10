@@ -47,6 +47,7 @@ class _MainHomeState extends State<MainHome> {
             child: BottomNavigationBar(
               showSelectedLabels: false,
               showUnselectedLabels: false,
+              
               backgroundColor: ThemeColors().grey.withOpacity(0.5),
               currentIndex: currentPage,
               type: BottomNavigationBarType.fixed,
