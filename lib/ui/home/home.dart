@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                         color: ThemeColors().blue,
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      height: 140,
+                      // height: 140,
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                                         '${snapshot.data!.docs.length} projects',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 30,
+                                          fontSize: 28,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       )
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                                             'You have no projects',
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 30,
+                                              fontSize: 28,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           )
@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                                             '${snapshot.data!.docs.length} project',
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 30,
+                                              fontSize: 28,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           );
