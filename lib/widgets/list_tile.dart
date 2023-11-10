@@ -1,8 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:taskify/theme/theme_colors.dart';
-import 'package:badges/badges.dart' badge;
-
+import 'package:badges/badges.dart' as badges;
 class ListTileWidget extends StatelessWidget {
   final String title;
   final String lastMessage;
